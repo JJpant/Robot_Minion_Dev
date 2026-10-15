@@ -37,7 +37,7 @@ On part de zéro, Formatage de la carte SD --> https://www.sdcard.org/downloads/
 Préparation de la carte SD, sous windows, à l'aide de **Raspberry Pi Imager** --> https://www.raspberrypi.com/software/
 
 dans Raspberry Pi Imager, on sélectionne :
-- le type de carte : PI 4
+- le type de carte : PI 4 ou **PI 5**
 - l'OS  --> Raspberry PI OS (other) -->  Raspberry PI OS Lite (64-bit) **
 - la carte SD cible
 - dans les options de configuration : Nom machine, user/pass, conf WiFi, SSH ...
@@ -72,13 +72,19 @@ mise à jour système
 
 installation des packages système indispensables
 
-    sudo apt install vim git python3-pip virtualenv mpg321 pigpiod nodejs npm python3-picamera2
+    sudo apt install vim git python3-pip virtualenv mpg321 python3-lgpio nodejs npm python3-picamera2
 
-Activation du service de gestion des GPIOs
+Gestion des GPIOs : le projet utilise **lgpio** (via `lib/gpio_compat.py`), qui fonctionne sur Raspberry Pi 4 **et** Pi 5.
+Plus de démon `pigpiod` (il n'est pas compatible avec le Pi 5) : rien à activer.
 
-    sudo systemctl enable pigpiod
-    sudo systemctl start pigpiod
-    sudo systemctl status pigpiod
+Notes Raspberry Pi 5 :
+
+- Pas de prise jack 3,5 mm : utiliser une carte son USB, un DAC I2S, le HDMI ou le Bluetooth (le son est joué avec `mpg321`)
+- Alimentation 5V / 5A conseillée (sinon courant USB limité, ce qui peut gêner le module WiFi USB)
+- Caméra : connecteurs CSI 22 broches, câble adaptateur 15 -> 22 broches nécessaire pour les caméras standard
+- Ventilateur / Active Cooler conseillé (OpenCV, MediaPipe)
+- Le PWM (moteurs CC) et les servos branchés en direct sur les GPIO sont générés par logiciel avec lgpio : pour les servos, préférer les types `pca9685` / `pca9685_onoff` dans `bin/data.json`
+- Si `import board` (Blinka / ServoKit) échoue : `pip uninstall RPi.GPIO` puis `pip install rpi-lgpio`
 
 ---
 
@@ -312,11 +318,11 @@ Nous avons donc maintenant 2 interfaces WiFi
 Il est possible de désactiver la carte WiFi interne afin de ne conserver que le module USB :
 
 
-    # dans  /boot/config.txt
+    # dans  /boot/firmware/config.txt  (/boot/config.txt avant Bookworm)
     # ajout de :
 
-        dtoverlay=pi3-disable-bt
-        dtoverlay=pi3-disable-wifi
+        dtoverlay=disable-bt
+        dtoverlay=disable-wifi
 
 
     systemctl stop bluetooth

@@ -3,7 +3,7 @@ simple_file_checksum
 pythonping
 numpy
 psutil
-pigpio
+lgpio
 pyserial
 opencv-contrib-python
 mediapipe
