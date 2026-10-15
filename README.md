@@ -92,7 +92,7 @@ Notes Raspberry Pi 5 :
 
 Récupération du dépot Git , depuis le répertoire /home/pi :
 
-    git clone https://github.com/FredJ21/Robot_Minion_Dev.git  MINION
+       git clone -b pi5 https://github.com/JJpant/Robot_Minion_Dev.git MINION
 
 ...
 
