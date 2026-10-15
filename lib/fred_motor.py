@@ -11,7 +11,7 @@ from time import time
 from simple_file_checksum import get_checksum
 from numpy import interp
 
-import pigpio
+import gpio_compat as pigpio     # Pi 5 : pigpio n existe plus, couche lgpio
 
 from fred_lib       import col
 

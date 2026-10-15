@@ -12,7 +12,7 @@ from simple_file_checksum import get_checksum
 from numpy import interp
 
 from adafruit_servokit import ServoKit
-import pigpio
+import gpio_compat as pigpio     # Pi 5 : pigpio n existe plus, couche lgpio
 import serial
 
 from fred_lib       import col

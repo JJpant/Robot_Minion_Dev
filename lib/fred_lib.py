@@ -5,7 +5,7 @@ import _thread
 
 from time import sleep
 
-import pigpio
+import gpio_compat as pigpio     # Pi 5 : pigpio n existe plus, couche lgpio
 
 TIMEOUT_BUTTON = 5
 
